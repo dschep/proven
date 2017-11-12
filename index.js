@@ -12,6 +12,7 @@
     'use strict';
 
     const icons = {
+        keybase: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAA3XAAAN1wFCKJt4AAAAB3RJTUUH4QsMATQcgiMpoQAAAWNJREFUOMuN0r9L1WEUx/GX8hUzu4GUiZVaIA2CCcpdJByCIEoKQxqUQBz88Rek4NpUIU5uQhAE4VA0CSFNLm5iWJMkLg2aaIIOelvOhacviPezPJxznufD57x5+F8XcR/FOD86R1muXsAVXEUHltGKrbMMqnL1OmbQi2s4QR++YQyl8xItYAN7uJmk/IJhFagKt/En1x/BbCUMStjGPh5G/AztkaoWx+mD6pzBvVihhLnY+3IArcYPPDgr/lMc4Q3qUINFvMInPMFd/MRo/nE7DvE26utxTuI1+rEWvWZsois1eIdfseNzDEa/EV/xAS+S++NYKheX8Bcv8SgAFmJWiwZcyCUewiluZOhEfcBaDIhTeIYmHMQX38UqdmK2hmKGW+E6ge+4EzAHgnpZrbF3Q3CZQiFL4k2jG49jpWJiUEBL/MiymvBbwHmP+WTYgc9J3RMgU22EqSwYbKNNZerFCvwDDf1EbHQFhUQAAAAASUVORK5CYII=',
         hackernews: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAA3XAAAN1wFCKJt4AAAAB3RJTUUH4QsMAQUarR2LJgAAAKNJREFUOMvFkzsOwyAQRB8hd+IGew9aSxRIyKUVn863cUVDtSkiWfEnGMWKMhXMrnZmxGIA5QJuXMRqQAgBVWUcx12j9x5VJYSw4s02gurraoyhhd9F6PsegGEYFq7rulWt6uBI7ZM6gAUeWzLnjIhQSsE5h4iQUmKapjYH76pL44F69RljjIfnZgdn2ZsWaRvj95v4De614jzPWGurA8zff+MTlW89eZm3DJYAAAAASUVORK5CYII=',
         reddit: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAA3XAAAN1wFCKJt4AAAAB3RJTUUH4QsMAQUIXqT6bgAAAU1JREFUOMut0r9L1lEYBfDPa6++oCAuDtEoQRBRg+Bgw0u9gTYZhS415lCDiOIouQr+AW1REESDOjgIZrlJRFJIBOniJIIV+AvRxOUI30HohXqWy733Oeeec57LP9aFOvva0YgKnuE+vuNXQx3g5/iCdazhErYwW8/LnQFVonYJj3Edv/8GbsAw3hasdmMTOyFSRhMeog1z6EM/rmA33vfwFS9QSwblKPMa77GIk3i7g+aCmhbcxgz+4APe4Y3IqSaYuwE0nWOpkrUnvVXsw8uQjKbhHg7xqAAewFHuYCSYV2c5bONyIagf6C0Q1DKNm9l34GewYCXAequKT8WDYSzEZwnLGAtpDRP4mNFWEuKQNJ/ZmEYrBrN/gmtJ/XOy2svP3MUDHJUKKsp4inF8y1g3cICr6MINTGEyxErn+GvGrci/iOMQrWI+Kv5fnQI3V0l+bKwI4gAAAABJRU5ErkJggg==',
         twitter: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAA3XAAAN1wFCKJt4AAAAB3RJTUUH4QsMAQQtDLsfaAAAASFJREFUOMu10jFrVUEQBeBvZo1IUPIKLQQbixSp7FQIom3SWMXq/Yr0/gILm5TpAklrrSkULMTqYSNpDcQimATUYNDnWuRGLsm7lwfigWGH2TnnLDPLP6JM2XeT8oS4Rz3CQVO/BjfIpz3kRyEPQ9YmfqRcC+U1FlCWQtaUz3HlHDlDfmqRW1Hek6twt3XxkbKCy43A/GRy1pSbmIEI5d25hv0QL1KudwmczoRLWOT3F6IiGufrxOPaO9fx57NsEPKgy6kjTnAVEkdVDPF1+u3XbXxrV2ZTboT8Oc0L8PDvmprzGLvNTHoRbOFN18dcDvGyx32EuQ5hd1I+C/l9MjleYTCJ/CCUtz2uHyjD1oovOJ/hNuU+9RZ+EXuMR9jxP/EHGLBvXbXVSZYAAAAASUVORK5CYII=',
@@ -31,7 +32,11 @@
                     onerror: reject,
                 }))
                   .then(({response}) => JSON.parse(response))
-                  .then(({them: [{proofs_summary: {all}}]}) => all)
+                  .then(({them: [{proofs_summary: {all}, basics: {username}}]}) => [{
+                      nametag: username,
+                      service_url: `https://keybase.io/${username}`,
+                      proof_type: 'keybase',
+                  }, ...all])
             );
         }
         return users.get(username);
@@ -40,6 +45,7 @@
     const element = document.querySelector('.ProfileHeaderCard-screenname');
     getUser(user)
       .then((proofs) => proofs.map(({proof_type, nametag, service_url}) => {
+        if (proof_type === 'twitter') return;
         element.innerHTML +=`
           <br/>
           <a href="${service_url}" class="ProfileHeaderCard-screennameLink u-linkComplex js-nav">
