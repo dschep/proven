@@ -7,5 +7,5 @@ Current version available for install on
     [GreasyFork](https://greasyfork.org/en/scripts/35054-proven).
 
 ## Screenshots
-![](Screenshot from 2017-11-11 19-38-29.png)
-![](Screenshot from 2017-11-11 19-47-53.png)
+![](./screenshot1.png)
+![](./screenshot2.png)
