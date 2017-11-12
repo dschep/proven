@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Proven
 // @namespace    http://tampermonkey.net/
-// @version      0.2
+// @version      0.3
 // @description  Show Keybase Proofs on Twitter Profiles
 // @author       Daniel Schep
 // @match        https://twitter.com/*
