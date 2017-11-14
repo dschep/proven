@@ -3,7 +3,11 @@
   "name": "Proven",
   "description": "An alterative to Twitter's verified accounts based on Keybase",
   "version": "1.0",
-  "icons": { "128": "icon_128.png" },
+  "icons": {
+    "48": "icon_48.png",
+    "128": "icon_128.png",
+    "512": "icon_512.png",
+  },
   "browser_action": {
   },
   "content_scripts": [
