@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Proven
 // @namespace    http://tampermonkey.net/
-// @version      0.6
+// @version      0.7
 // @description  Show Keybase Proofs on Twitter Profiles
 // @author       Daniel Schep
 // @match        https://twitter.com/*
@@ -43,6 +43,7 @@
     }
     return users.get(username);
   };
+
   const getProfileInfo = () => {
     const user = document.querySelector('.ProfileHeaderCard-screenname b').innerText;
     const element = document.querySelector('.ProfileHeaderCard-screenname:not(.proven)');
@@ -60,4 +61,20 @@
       }));
   };
   window.setInterval(getProfileInfo, 1000);
+  const getTweetInfo = () => {
+    Array.from(document.querySelectorAll('.tweet .account-group:not(.proven)'))
+      .map(parent => {
+        parent.classList.add('proven');
+        const user = parent.querySelector('.username b').innerText;
+        const element = parent.querySelector('.UserBadges');
+        getUser(user)
+          .then((proofs) => proofs.map(({proof_type, nametag, service_url}) => {
+            if (proof_type === 'twitter') return;
+            element.innerHTML +=`
+            <a href="${service_url}" title="${nametag}"><img src="${icons[proof_type]}"/></a>
+            `;
+          }));
+      });
+  };
+  window.setInterval(getTweetInfo, 1000);
 })();
