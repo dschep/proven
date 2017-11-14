@@ -8,3 +8,4 @@ Current version available for install on
 
 ## Screenshots
 ![](./screenshot.png)
+![](./screenshot2.png)
