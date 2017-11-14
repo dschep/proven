@@ -1,13 +1,3 @@
-// ==UserScript==
-// @name         Proven
-// @namespace    http://tampermonkey.net/
-// @version      0.8
-// @description  Show Keybase Proofs on Twitter Profiles
-// @author       Daniel Schep
-// @match        https://twitter.com/*
-// @grant        GM_xmlhttpRequest
-// ==/UserScript==
-
 (function() {
   'use strict';
 
@@ -27,13 +17,11 @@
     if (!users.has(username)) {
       users.set(
         username,
-        new Promise((resolve, reject) => GM_xmlhttpRequest({
+        fetch(`https://keybase.io/_/api/1.0/user/lookup.json?twitter=${username}`, {
           method: 'GET',
-          url: `https://keybase.io/_/api/1.0/user/lookup.json?twitter=${username}`,
-            onload: resolve,
-          onerror: reject,
-        }))
-          .then(({response}) => JSON.parse(response))
+          cors: true,
+        })
+          .then(resp => resp.json())
           .then(({them: [{proofs_summary: {all}, basics: {username}}]}) => [{
             nametag: username,
             service_url: `https://keybase.io/${username}`,

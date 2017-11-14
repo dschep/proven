@@ -1,0 +1,19 @@
+{
+  "manifest_version": 2,
+  "name": "Proven",
+  "description": "An alterative to Twitter's verified accounts based on Keybase",
+  "version": "1.0",
+  "icons": { "128": "icon_128.png" },
+  "browser_action": {
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://*.twitter.com/*"],
+      "js": ["index.js"]
+    }
+  ],
+  "permissions": [
+    "https://keybase.io/_/api/1.0/*",
+    "webRequest"
+  ]
+}
