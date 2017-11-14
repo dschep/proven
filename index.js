@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Proven
 // @namespace    http://tampermonkey.net/
-// @version      0.7
+// @version      0.8
 // @description  Show Keybase Proofs on Twitter Profiles
 // @author       Daniel Schep
 // @match        https://twitter.com/*
@@ -45,9 +45,9 @@
   };
 
   const getProfileInfo = () => {
-    const user = document.querySelector('.ProfileHeaderCard-screenname b').innerText;
     const element = document.querySelector('.ProfileHeaderCard-screenname:not(.proven)');
     if (!element) return;
+    const user = element.querySelector('b').innerText;
     element.classList.add('proven');
     getUser(user)
       .then((proofs) => proofs.map(({proof_type, nametag, service_url}) => {
