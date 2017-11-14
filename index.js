@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Proven
 // @namespace    http://tampermonkey.net/
-// @version      0.3
+// @version      0.4
 // @description  Show Keybase Proofs on Twitter Profiles
 // @author       Daniel Schep
 // @match        https://twitter.com/*
@@ -41,16 +41,21 @@
         }
         return users.get(username);
     };
-    const user = document.querySelector('.ProfileHeaderCard-screenname b').innerText;
-    const element = document.querySelector('.ProfileHeaderCard-screenname');
-    getUser(user)
-      .then((proofs) => proofs.map(({proof_type, nametag, service_url}) => {
-        if (proof_type === 'twitter') return;
-        element.innerHTML +=`
-          <br/>
-          <a href="${service_url}" class="ProfileHeaderCard-screennameLink u-linkComplex js-nav">
-            <b><img src="${icons[proof_type]}"/> ${nametag}</b>
-          </a>
+    const getProfileInfo = () => {
+        const user = document.querySelector('.ProfileHeaderCard-screenname b').innerText;
+        const element = document.querySelector('.ProfileHeaderCard-screenname:not(.proven)');
+        if (!element) return;
+        element.classList.add('proven');
+        getUser(user)
+            .then((proofs) => proofs.map(({proof_type, nametag, service_url}) => {
+            if (proof_type === 'twitter') return;
+            element.innerHTML +=`
+              <br/>
+              <a href="${service_url}" class="ProfileHeaderCard-screennameLink u-linkComplex js-nav">
+                  <b><img src="${icons[proof_type]}"/> ${nametag}</b>
+              </a>
         `;
-    }));
+        }));
+    };
+    window.setInterval(getProfileInfo, 1000);
 })();
