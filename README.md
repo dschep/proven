@@ -8,4 +8,3 @@ Install on your browser's respective add on store:
 
 ## Screenshots
 ![](./screenshot.png)
-![](./screenshot2.png)
