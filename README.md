@@ -1,6 +1,8 @@
 # ![](./icon_48.png) Proven
 A [Keybase](https://keybase.io) based alternative to Twitter's verified
-accounts.
+accounts. It adds badges like for keybase, github, etc next to users
+names like Twitter's verified badge but based what accounts the user
+has posted proofs for Keybase. See the screenshot for what it looks like.
 
 Install on your browser's respective add on store:
 * Firefox: https://addons.mozilla.org/en-US/firefox/addon/proven/
