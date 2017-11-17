@@ -41,7 +41,7 @@
 
   const getProfileInfo = () => {
     let user;
-    const element = document.querySelector('.ProfileHeaderCard-screenname:not(.proven)');
+    const element = document.querySelector('.ProfileCard-screenname:not(.proven),.ProfileHeaderCard-screenname:not(.proven)');
     if (element) {
       user = element.querySelector('b').innerText;
       element.classList.add('proven');
@@ -69,7 +69,7 @@
   };
   window.setInterval(getProfileInfo, 1000);
   const getTweetInfo = () => {
-    Array.from(document.querySelectorAll('.tweet .account-group:not(.proven), ._3Qd1FkLM div:not(.proven)'))
+    Array.from(document.querySelectorAll('.account-group:not(.proven), ._3Qd1FkLM div:not(.proven)'))
       .map(element => {
         element.classList.add('proven');
         const user = element.querySelector('.username b') ? element.querySelector('.username b').innerText : element.innerText.replace('@', '');
