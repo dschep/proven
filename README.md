@@ -11,3 +11,6 @@ user has posted proofs for Keybase. See the screenshot for what it looks like.
 Install on your browser's respective add on store:
 * Firefox: https://addons.mozilla.org/en-US/firefox/addon/proven/
 * Chrome: https://chrome.google.com/webstore/detail/proven/algligpkkhlodbalbiilbfiihcooekjn?hl=en-US&gl=US
+
+## mobile screenshot
+![](./screenshot2.png)
