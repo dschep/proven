@@ -8,8 +8,6 @@
     "128": "icon_128.png",
     "512": "icon_512.png"
   },
-  "browser_action": {
-  },
   "content_scripts": [
     {
       "matches": ["https://*.twitter.com/*"],
