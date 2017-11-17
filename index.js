@@ -4,7 +4,7 @@
   const getStyle = () => {
     const styleSheetNames = new Set(Array.from(document.styleSheets).map(({ href }) => href && href.split('/').pop()));
     if (styleSheetNames.has('nightmode_twitter_core.bundle.css'))
-      return 'height:12px;';
+      return 'filter: invert(100%);height:12px;';
     return 'height:12px;';
   };
 
@@ -48,12 +48,21 @@
       getUser(user)
         .then((proofs) => proofs.map(({ proof_type, nametag, service_url }) => {
           if (proof_type === 'twitter') return;
-          element.innerHTML += `
+          if (proof_type === 'keybase') {
+            element.innerHTML += `
+            <br/>
+            <a href="${service_url}" class="ProfileHeaderCard-screennameLink u-linkComplex js-nav">
+            <b><img style="height:12px;" src="${icons[proof_type]}"/> ${nametag}</b>
+            </a>
+            `
+          } else {
+            element.innerHTML += `
           <br/>
           <a href="${service_url}" class="ProfileHeaderCard-screennameLink u-linkComplex js-nav">
           <b><img style="${getStyle()}" src="${icons[proof_type]}"/> ${nametag}</b>
           </a>
           `;
+          }
         }));
     }
     const mobileElement = document.querySelector('._2CFyTHU5:not(.proven)');
@@ -78,7 +87,7 @@
           .then((proofs) => proofs.map(({ proof_type, nametag, service_url }) => {
             if (proof_type != 'keybase') return;
             target.innerHTML += `
-            <a href="${service_url}" title="${nametag}"><img style="${getStyle()}" src="${icons[proof_type]}"/></a>
+            <a href="${service_url}" title="${nametag}"><img style="height:12px;" src="${icons[proof_type]}"/></a>
             `;
           }));
       });
