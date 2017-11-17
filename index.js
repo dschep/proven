@@ -1,6 +1,13 @@
 (function() {
   'use strict';
 
+  const getStyle = () => {
+    const styleSheetNames = new Set(Array.from(document.styleSheets).map(({href}) => href && href.split('/').pop()));
+    if (styleSheetNames.has('nightmode_twitter_core.bundle.css'))
+      return 'filter: invert(100%);';
+    return '';
+  };
+
   const icons = {
     keybase: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAA3XAAAN1wFCKJt4AAAAB3RJTUUH4QsMATQcgiMpoQAAAWNJREFUOMuN0r9L1WEUx/GX8hUzu4GUiZVaIA2CCcpdJByCIEoKQxqUQBz88Rek4NpUIU5uQhAE4VA0CSFNLm5iWJMkLg2aaIIOelvOhacviPezPJxznufD57x5+F8XcR/FOD86R1muXsAVXEUHltGKrbMMqnL1OmbQi2s4QR++YQyl8xItYAN7uJmk/IJhFagKt/En1x/BbCUMStjGPh5G/AztkaoWx+mD6pzBvVihhLnY+3IArcYPPDgr/lMc4Q3qUINFvMInPMFd/MRo/nE7DvE26utxTuI1+rEWvWZsois1eIdfseNzDEa/EV/xAS+S++NYKheX8Bcv8SgAFmJWiwZcyCUewiluZOhEfcBaDIhTeIYmHMQX38UqdmK2hmKGW+E6ge+4EzAHgnpZrbF3Q3CZQiFL4k2jG49jpWJiUEBL/MiymvBbwHmP+WTYgc9J3RMgU22EqSwYbKNNZerFCvwDDf1EbHQFhUQAAAAASUVORK5CYII=',
     hackernews: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAA3XAAAN1wFCKJt4AAAAB3RJTUUH4QsMAQUarR2LJgAAAKNJREFUOMvFkzsOwyAQRB8hd+IGew9aSxRIyKUVn863cUVDtSkiWfEnGMWKMhXMrnZmxGIA5QJuXMRqQAgBVWUcx12j9x5VJYSw4s02gurraoyhhd9F6PsegGEYFq7rulWt6uBI7ZM6gAUeWzLnjIhQSsE5h4iQUmKapjYH76pL44F69RljjIfnZgdn2ZsWaRvj95v4De614jzPWGurA8zff+MTlW89eZm3DJYAAAAASUVORK5CYII=',
@@ -43,7 +50,7 @@
         element.innerHTML +=`
         <br/>
         <a href="${service_url}" class="ProfileHeaderCard-screennameLink u-linkComplex js-nav">
-        <b><img src="${icons[proof_type]}"/> ${nametag}</b>
+        <b><img style="${getStyle()}" src="${icons[proof_type]}"/> ${nametag}</b>
         </a>
         `;
       }));
@@ -59,7 +66,7 @@
           .then((proofs) => proofs.map(({proof_type, nametag, service_url}) => {
             if (proof_type === 'twitter') return;
             element.innerHTML +=`
-            <a href="${service_url}" title="${nametag}"><img src="${icons[proof_type]}"/></a>
+            <a href="${service_url}" title="${nametag}"><img style="${getStyle()}" src="${icons[proof_type]}"/></a>
             `;
           }));
       });
