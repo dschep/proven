@@ -1,4 +1,4 @@
-proven.zip: icon_128.png icon_48.png icon_512.png index.js LICENSE manifest.json
+proven.zip: proven.svg index.js LICENSE manifest.json
 	zip -r -FS $@ $^
 
 index.js: template.js facebook.svg generic_web_site.svg github.svg hackernews.svg keybase.svg reddit.svg
