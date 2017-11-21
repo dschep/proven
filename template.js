@@ -1,9 +1,19 @@
 (function() {
   'use strict';
 
+  const oneLineTrim = (literals, ...substitutions) => {
+    let result = '';
+    for (const i in literals) {
+      result += literals[i].split(/\n/g).map(s => s.trim()).join('');
+      if (i < substitutions.length)
+        result += substitutions[i];
+    }
+    return result;
+  };
+
   const getStyle = () => {
     const styleSheetNames = new Set(Array.from(document.styleSheets).map(({href}) => href && href.split('/').pop()));
-    let style = '';
+    let style = 'margin-right: 2px;';
     if (styleSheetNames.has('nightmode_twitter_core.bundle.css'))
       style += 'filter: invert(100%);';
     return style;
@@ -48,10 +58,10 @@
       getUser(user)
         .then((proofs) => proofs.map(({proof_type, nametag, service_url}) => {
           if (proof_type === 'twitter') return;
-          element.innerHTML +=`
+          element.innerHTML += oneLineTrim`
           <br/>
           <a href="${service_url}" class="ProfileHeaderCard-screennameLink u-linkComplex js-nav">
-          <b><span style="${getStyle()}">${icons[proof_type]}</span> ${nametag}</b>
+            <b><span style="${getStyle()}">${icons[proof_type]}</span> ${nametag}</b>
           </a>
           `;
         }));
@@ -63,7 +73,13 @@
       getUser(user)
         .then((proofs) => proofs.map(({proof_type, nametag, service_url}) => {
           if (proof_type === 'twitter') return;
-          mobileElement.innerHTML +=`<br><span class="rn-13yce4e rn-fnigne rn-ndvcnb rn-gxnn5r rn-deolkf rn-6gldlz rn-1471scf rn-1lw9tu2 rn-ogifhg rn-7cikom rn-1it3c9n rn-ad9z0x rn-1mnahxq rn-61z16t rn-p1pxzi rn-11wrixw rn-wk8lta rn-9aemit rn-1mdbw0j rn-gy4na3 rn-bauka4 rn-irrty rn-qvutc0"><a style="color:rgb(101,119,134);text-decoration:none;" href="${service_url}" style="" class=""><span style="${getStyle()}">${icons[proof_type]}</span> ${nametag}</a></span>`;
+          mobileElement.innerHTML += oneLineTrim`
+          <br/>
+          <span class="rn-13yce4e rn-fnigne rn-ndvcnb rn-gxnn5r rn-deolkf rn-6gldlz rn-1471scf rn-1lw9tu2 rn-ogifhg rn-7cikom rn-1it3c9n rn-ad9z0x rn-1mnahxq rn-61z16t rn-p1pxzi rn-11wrixw rn-wk8lta rn-9aemit rn-1mdbw0j rn-gy4na3 rn-bauka4 rn-irrty rn-qvutc0">
+            <a style="color:rgb(101,119,134);text-decoration:none;" href="${service_url}" style="" class="">
+              <span style="${getStyle()}">${icons[proof_type]}</span> ${nametag}
+            </a>
+          </span>`;
         }));
     }
   };
@@ -77,9 +93,10 @@
         getUser(user)
           .then((proofs) => proofs.map(({proof_type, nametag, service_url}) => {
             if (proof_type === 'twitter') return;
-            target.innerHTML +=`
-            <a href="${service_url}" title="${nametag}"><span style="${getStyle()}">${icons[proof_type]}</span></a>
-            `;
+            target.innerHTML += oneLineTrim`
+            <a href="${service_url}" title="${nametag}">
+              <span style="${getStyle()}">${icons[proof_type]}</span>
+            </a>`;
           }));
       });
   };
