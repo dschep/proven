@@ -42,7 +42,7 @@
           .then(({them: [{proofs_summary: {all}, basics: {username}}]}) => [{
             nametag: username,
             service_url: `https://keybase.io/${username}`,
-              proof_type: 'keybase',
+            proof_type: 'keybase',
           }, ...all])
       );
     }
