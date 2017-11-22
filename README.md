@@ -14,3 +14,6 @@ Install on your browser's respective add on store:
 
 ## mobile screenshot
 ![](./screenshot2.png)
+
+## Tweetdeck support
+![](./screenshot3.png)
