@@ -44,7 +44,11 @@
             service_url: `https://keybase.io/${username}`,
             proof_type: 'keybase',
           }, ...all])
-          .catch(error => {debugger;})
+          .catch(error => {
+            if (!error.message.includes('destructure') &&
+                !error.message.includes('Symbol.iterator'))
+              throw error;
+          })
       );
     }
     return users.get(username);
@@ -57,7 +61,7 @@
       user = element.querySelector('b').innerText;
       element.classList.add('proven');
       getUser(user)
-        .then((proofs) => proofs.map(({proof_type, nametag, service_url}) => {
+        .then((proofs) => proofs && proofs.map(({proof_type, nametag, service_url}) => {
           if (proof_type === 'twitter') return;
           element.innerHTML += oneLineTrim`
           <br/>
@@ -72,7 +76,7 @@
       user = mobileElement.querySelector('.Z5IeoGpY').innerText.replace('@', '');
       mobileElement.classList.add('proven');
       getUser(user)
-        .then((proofs) => proofs.map(({proof_type, nametag, service_url}) => {
+        .then((proofs) => proofs && proofs.map(({proof_type, nametag, service_url}) => {
           if (proof_type === 'twitter') return;
           mobileElement.innerHTML += oneLineTrim`
           <br/>
@@ -90,14 +94,17 @@
       '.account-group:not(.proven), ._3Qd1FkLM div:not(.proven), .account-inline:not(.proven)'))
       .map(element => {
         element.classList.add('proven');
-        let user, target;
+        let userElement, user, target;
         if (element.classList.contains('account-group')) {
           // twitter.com
-          user = element.querySelector('.username b').innerText;
+          userElement = element.querySelector('.username b');
+          if (!userElement) return
+          user = userElement.innerText;
+          if (!user) return
           target = element.querySelector('.UserBadges');
         } else if (element.classList.contains('account-inline')) {
           // tweetdeck.twitter.com
-          const userElement = element.querySelector('.username');
+          userElement = element.querySelector('.username');
           user = userElement.innerText.replace('@', '');
           userElement.outerHTML = '<span class="UserBadges"></span> ' + userElement.outerHTML;
           target = element.querySelector('.UserBadges');
@@ -107,7 +114,7 @@
           target = element;
         }
         getUser(user)
-          .then((proofs) => proofs.map(({proof_type, nametag, service_url}) => {
+          .then((proofs) => proofs && proofs.map(({proof_type, nametag, service_url}) => {
             if (proof_type === 'twitter') return;
             target.innerHTML += oneLineTrim`
             <a href="${service_url}" title="${nametag}">
