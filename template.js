@@ -157,4 +157,17 @@
           }));
       });
   }, 1000);
+
+  if (window.location.host.endsWith('reddit.com')) window.setInterval(() => {
+    Array.from(document.querySelectorAll('.author:not(.proven)'))
+      .map(element => {
+        element.classList.add('proven');
+        const user = element.innerText;
+        getUser(user, 'reddit')
+          .then((proofs) => proofs && proofs.map(({proof_type, nametag, service_url}) => {
+            if (proof_type === 'reddit') return;
+            element.innerHTML += ` <span style="${getStyle()}">${icons[proof_type]}</span>`;
+          }));
+      });
+  }, 1000);
 })();
