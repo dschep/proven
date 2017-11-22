@@ -2,13 +2,13 @@
   "manifest_version": 2,
   "name": "Proven",
   "description": "An alternative to Twitter's verified accounts based on Keybase",
-  "version": "1.5",
+  "version": "1.5.1",
   "icons": {
-    "32": "proven.svg",
-    "48": "proven.svg",
-    "96": "proven.svg",
-    "128": "proven.svg",
-    "512": "proven.svg"
+    "32": "icons/proven32.png",
+    "48": "icons/proven48.png",
+    "96": "icons/proven96.png",
+    "128": "icons/proven128.png",
+    "512": "icons/proven512.png"
   },
   "content_scripts": [
     {
