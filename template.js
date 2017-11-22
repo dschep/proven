@@ -54,7 +54,7 @@
     return users.get(username);
   };
 
-  const getProfileInfo = () => {
+  window.setInterval(() => {
     let user;
     const element = document.querySelector('.ProfileCard-screenname:not(.proven),.ProfileHeaderCard-screenname:not(.proven)');
     if (element) {
@@ -87,9 +87,9 @@
           </span>`;
         }));
     }
-  };
-  window.setInterval(getProfileInfo, 1000);
-  const getTweetInfo = () => {
+  }, 1000);
+
+  window.setInterval(() => {
     Array.from(document.querySelectorAll(
       '.account-group:not(.proven), ._3Qd1FkLM div:not(.proven), .account-inline:not(.proven)'))
       .map(element => {
@@ -122,6 +122,5 @@
             </a>`;
           }));
       });
-  };
-  window.setInterval(getTweetInfo, 1000);
+  }, 1000);
 })();
