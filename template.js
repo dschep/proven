@@ -44,6 +44,7 @@
             service_url: `https://keybase.io/${username}`,
             proof_type: 'keybase',
           }, ...all])
+          .catch(error => {debugger;})
       );
     }
     return users.get(username);
@@ -85,11 +86,26 @@
   };
   window.setInterval(getProfileInfo, 1000);
   const getTweetInfo = () => {
-    Array.from(document.querySelectorAll('.account-group:not(.proven), ._3Qd1FkLM div:not(.proven)'))
+    Array.from(document.querySelectorAll(
+      '.account-group:not(.proven), ._3Qd1FkLM div:not(.proven), .account-inline:not(.proven)'))
       .map(element => {
         element.classList.add('proven');
-        const user = element.querySelector('.username b') ? element.querySelector('.username b').innerText : element.innerText.replace('@', '');
-        const target = element.querySelector('.UserBadges') || element;
+        let user, target;
+        if (element.classList.contains('account-group')) {
+          // twitter.com
+          user = element.querySelector('.username b').innerText;
+          target = element.querySelector('.UserBadges');
+        } else if (element.classList.contains('account-inline')) {
+          // tweetdeck.twitter.com
+          const userElement = element.querySelector('.username');
+          user = userElement.innerText.replace('@', '');
+          userElement.outerHTML = '<span class="UserBadges"></span> ' + userElement.outerHTML;
+          target = element.querySelector('.UserBadges');
+        } else {
+          // mobile.twitter.com
+          user = element.innerText.replace('@', '');
+          target = element;
+        }
         getUser(user)
           .then((proofs) => proofs.map(({proof_type, nametag, service_url}) => {
             if (proof_type === 'twitter') return;
