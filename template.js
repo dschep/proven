@@ -31,11 +31,11 @@
   };
 
   const users = new Map();
-  const getUser = (username) => {
+  const getUser = (username, service = 'twitter') => {
     if (!users.has(username)) {
       users.set(
         username,
-        fetch(`https://keybase.io/_/api/1.0/user/lookup.json?twitter=${username}`, {
+        fetch(`https://keybase.io/_/api/1.0/user/lookup.json?${service}=${username}`, {
           method: 'GET',
           cors: true,
         })
