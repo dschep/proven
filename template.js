@@ -144,4 +144,17 @@
           }));
       });
   }, 1000);
+
+  if (window.location.host === 'news.ycombinator.com') window.setInterval(() => {
+    Array.from(document.querySelectorAll('.hnuser:not(.proven)'))
+      .map(element => {
+        element.classList.add('proven');
+        const user = element.innerText;
+        getUser(user, 'hackernews')
+          .then((proofs) => proofs && proofs.map(({proof_type, nametag, service_url}) => {
+            if (proof_type === 'hackernews') return;
+            element.innerHTML += ` <span style="${getStyle()}">${icons[proof_type]}</span>`;
+          }));
+      });
+  }, 1000);
 })();

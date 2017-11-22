@@ -14,7 +14,8 @@
     {
       "matches": [
         "https://*.twitter.com/*",
-        "https://github.com/*"
+        "https://github.com/*",
+        "https://news.ycombinator.com/*"
       ],
       "js": [
         "index.js"
