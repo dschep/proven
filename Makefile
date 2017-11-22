@@ -1,6 +1,7 @@
 SOURCES := template.js facebook.svg generic_web_site.svg github.svg hackernews.svg keybase.svg reddit.svg
+ZIP_CONTENTS := proven.svg index.js LICENSE manifest.json
 
-proven.zip: proven.svg index.js LICENSE manifest.json
+proven.zip: $(ZIP_CONTENTS)
 	zip -r -FS $@ $^
 
 index.js: $(SOURCES)
@@ -12,4 +13,4 @@ clean:
 lint:
 	eslint template.js
 watch:
-	while true; do inotifywait -e modify $(SOURCES); make; done
+	while true; do inotifywait -e modify $(SOURCES) $(ZIP_CONTENTS); make; done
