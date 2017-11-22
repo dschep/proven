@@ -27,6 +27,7 @@
     generic_web_site: '%%generic_web_site',
     dns: '%%generic_web_site',
     facebook: '%%facebook',
+    twitter: '%%twitter',
   };
 
   const users = new Map();

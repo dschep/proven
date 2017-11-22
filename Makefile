@@ -1,4 +1,4 @@
-SOURCES := template.js facebook.svg generic_web_site.svg github.svg hackernews.svg keybase.svg reddit.svg
+SOURCES := template.js facebook.svg generic_web_site.svg github.svg hackernews.svg keybase.svg reddit.svg twitter.svg
 ZIP_CONTENTS := proven.svg index.js LICENSE manifest.json
 
 proven.zip: $(ZIP_CONTENTS)
