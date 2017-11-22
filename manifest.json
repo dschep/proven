@@ -12,8 +12,12 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://*.twitter.com/*"],
-      "js": ["index.js"]
+      "matches": [
+        "https://*.twitter.com/*"
+      ],
+      "js": [
+        "index.js"
+      ]
     }
   ],
   "permissions": [
