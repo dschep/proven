@@ -124,4 +124,24 @@
           }));
       });
   }, 1000);
+
+  if (window.location.host === 'github.com') window.setInterval(() => {
+    Array.from(document.querySelectorAll('.vcard-username:not(.proven)'))
+      .map(element => {
+        element.classList.add('proven');
+        const user = element.innerText;
+        const target = document.querySelector('.vcard-details');
+        getUser(user, 'github')
+          .then((proofs) => proofs && proofs.map(({proof_type, nametag, service_url}) => {
+            if (proof_type === 'github') return;
+            target.innerHTML += oneLineTrim`
+            <li class="vcard-detail pt-1 css-truncate css-truncate-target" style="margin-bottom: -4px;">
+              <span class="octicon" style="${getStyle()}">${icons[proof_type]}</span>
+              <a class="u-url" href="${service_url}" title="${nametag}">
+                ${nametag}
+              </a>
+            </li>`;
+          }));
+      });
+  }, 1000);
 })();
