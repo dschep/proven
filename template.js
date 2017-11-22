@@ -55,7 +55,7 @@
     return users.get(username);
   };
 
-  window.setInterval(() => {
+  if (window.location.host.endsWith('twitter.com')) window.setInterval(() => {
     let user;
     const element = document.querySelector('.ProfileCard-screenname:not(.proven),.ProfileHeaderCard-screenname:not(.proven)');
     if (element) {
@@ -90,7 +90,7 @@
     }
   }, 1000);
 
-  window.setInterval(() => {
+  if (window.location.host.endsWith('twitter.com')) window.setInterval(() => {
     Array.from(document.querySelectorAll(
       '.account-group:not(.proven), ._3Qd1FkLM div:not(.proven), .account-inline:not(.proven)'))
       .map(element => {
