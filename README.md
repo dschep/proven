@@ -1,4 +1,4 @@
-# ![](./proven.svg) Proven
+# ![](./icons/proven32.png) Proven
 A [Keybase](https://keybase.io) based alternative to Twitter's verified
 accounts.
 
