@@ -14,7 +14,8 @@
   const getStyle = () => {
     const styleSheetNames = new Set(Array.from(document.styleSheets).map(({href}) => href && href.split('/').pop()));
     let style = 'margin-right: 2px;';
-    if (styleSheetNames.has('nightmode_twitter_core.bundle.css'))
+    if (styleSheetNames.has('nightmode_twitter_core.bundle.css') ||
+        document.body.parentElement.classList.contains('dark'))
       style += 'filter: invert(100%);';
     return style;
   };
