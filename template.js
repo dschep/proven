@@ -98,9 +98,9 @@
         if (element.classList.contains('account-group')) {
           // twitter.com
           userElement = element.querySelector('.username b');
-          if (!userElement) return
+          if (!userElement) return;
           user = userElement.innerText;
-          if (!user) return
+          if (!user) return;
           target = element.querySelector('.UserBadges');
         } else if (element.classList.contains('account-inline')) {
           // tweetdeck.twitter.com
