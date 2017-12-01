@@ -112,7 +112,7 @@
         } else {
           // mobile.twitter.com
           user = element.innerText.replace('@', '');
-          target = element;
+          target = element.parentElement.previousSibling;
         }
         getUser(user)
           .then((proofs) => proofs && proofs.map(({proof_type, nametag, service_url}) => {
