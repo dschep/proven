@@ -31,97 +31,101 @@
   };
 
   const users = new Map();
-  const getUser = (username, service = 'twitter') => {
+  async function fetchProofs(username, service = 'twitter') {
+    const resp = await fetch(`https://keybase.io/_/api/1.0/user/lookup.json?${service}=${username}`, {
+      method: 'GET',
+      cors: true,
+    });
+    const respObj = await resp.json();
+    if (!respObj.them[0])
+      return;
+    return [{
+      nametag: username,
+      service_url: `https://keybase.io/${username}`,
+        proof_type: 'keybase',
+    }, ...respObj.them[0].proofs_summary.all];
+  }
+  function getUser(username, service = 'twitter')  {
     if (!users.has(username)) {
-      users.set(
-        username,
-        fetch(`https://keybase.io/_/api/1.0/user/lookup.json?${service}=${username}`, {
-          method: 'GET',
-          cors: true,
-        })
-          .then(resp => resp.json())
-          .then(({them: [{proofs_summary: {all}, basics: {username}}]}) => [{
-            nametag: username,
-            service_url: `https://keybase.io/${username}`,
-            proof_type: 'keybase',
-          }, ...all])
-          .catch(error => {
-            if (!error.message.includes('destructure') &&
-                !error.message.includes('Symbol.iterator'))
-              throw error;
-          })
-      );
+      users.set(username, fetchProofs(username, service));
     }
     return users.get(username);
   };
-
-  if (window.location.host.endsWith('twitter.com')) window.setInterval(() => {
+  async function twitterProfiles() {
     let user;
     const element = document.querySelector('.ProfileCard-screenname:not(.proven),.ProfileHeaderCard-screenname:not(.proven)');
     if (element) {
       user = element.querySelector('b').innerText;
       element.classList.add('proven');
-      getUser(user)
-        .then((proofs) => proofs && proofs.map(({proof_type, nametag, service_url}) => {
-          if (proof_type === 'twitter') return;
-          element.innerHTML += oneLineTrim`
-          <br/>
-          <a href="${service_url}" class="ProfileHeaderCard-screennameLink u-linkComplex js-nav">
-            <b><span style="${getStyle()}">${icons[proof_type]}</span> ${nametag}</b>
-          </a>
-          `;
-        }));
+      const proofs = await getUser(user) || []
+      for (const {proof_type, nametag, service_url} of proofs) {
+        if (proof_type === 'twitter')
+          continue;
+        element.innerHTML += oneLineTrim`
+        <br/>
+        <a href="${service_url}" class="ProfileHeaderCard-screennameLink u-linkComplex js-nav">
+          <b><span style="${getStyle()}">${icons[proof_type]}</span> ${nametag}</b>
+        </a>
+        `;
+      }
     }
     const mobileElement = document.querySelector('._2CFyTHU5:not(.proven)');
     if (mobileElement) {
       user = mobileElement.querySelector('.Z5IeoGpY').innerText.replace('@', '');
       mobileElement.classList.add('proven');
-      getUser(user)
-        .then((proofs) => proofs && proofs.map(({proof_type, nametag, service_url}) => {
-          if (proof_type === 'twitter') return;
-          mobileElement.innerHTML += oneLineTrim`
-          <br/>
-          <span class="rn-13yce4e rn-fnigne rn-ndvcnb rn-gxnn5r rn-deolkf rn-6gldlz rn-1471scf rn-1lw9tu2 rn-ogifhg rn-7cikom rn-1it3c9n rn-ad9z0x rn-1mnahxq rn-61z16t rn-p1pxzi rn-11wrixw rn-wk8lta rn-9aemit rn-1mdbw0j rn-gy4na3 rn-bauka4 rn-irrty rn-qvutc0">
-            <a style="color:rgb(101,119,134);text-decoration:none;" href="${service_url}" style="" class="">
-              <span style="${getStyle()}">${icons[proof_type]}</span> ${nametag}
-            </a>
-          </span>`;
-        }));
+      const proofs = await getUser(user) || []
+      for (const {proof_type, nametag, service_url} of proofs) {
+        if (proof_type === 'twitter')
+          continue;
+        mobileElement.innerHTML += oneLineTrim`
+        <br/>
+        <span class="rn-13yce4e rn-fnigne rn-ndvcnb rn-gxnn5r rn-deolkf rn-6gldlz rn-1471scf rn-1lw9tu2 rn-ogifhg rn-7cikom rn-1it3c9n rn-ad9z0x rn-1mnahxq rn-61z16t rn-p1pxzi rn-11wrixw rn-wk8lta rn-9aemit rn-1mdbw0j rn-gy4na3 rn-bauka4 rn-irrty rn-qvutc0">
+          <a style="color:rgb(101,119,134);text-decoration:none;" href="${service_url}" style="" class="">
+            <span style="${getStyle()}">${icons[proof_type]}</span> ${nametag}
+          </a>
+        </span>`;
+      }
     }
-  }, 1000);
+  }
+  if (window.location.host.endsWith('twitter.com'))
+    window.setInterval(twitterProfiles, 1000);
 
-  if (window.location.host.endsWith('twitter.com')) window.setInterval(() => {
-    Array.from(document.querySelectorAll(
-      '.account-group:not(.proven), ._3Qd1FkLM div:not(.proven), .account-inline:not(.proven)'))
-      .map(element => {
-        element.classList.add('proven');
-        let userElement, user, target;
-        if (element.classList.contains('account-group')) {
-          // twitter.com
-          userElement = element.querySelector('.username b');
-          if (!userElement) return;
-          user = userElement.innerText;
-          if (!user) return;
-          target = element.querySelector('.UserBadges');
-        } else if (element.classList.contains('account-inline')) {
-          // tweetdeck.twitter.com
-          userElement = element.querySelector('.username');
-          user = userElement.innerText.replace('@', '');
-          userElement.outerHTML = '<span class="UserBadges"></span> ' + userElement.outerHTML;
-          target = element.querySelector('.UserBadges');
-        } else {
-          // mobile.twitter.com
-          user = element.innerText.replace('@', '');
-          target = element.parentElement.previousSibling;
-        }
-        getUser(user)
-          .then((proofs) => proofs && proofs.map(({proof_type, nametag, service_url}) => {
-            if (proof_type === 'twitter') return;
-            target.innerHTML += oneLineTrim`
-            <a href="${service_url}" title="${nametag}">
-              <span style="${getStyle()}">${icons[proof_type]}</span>
-            </a>`;
-          }));
-      });
-  }, 1000);
+  async function twitterTimeline()  {
+    for (const element of document.querySelectorAll(
+      '.account-group:not(.proven), ._3Qd1FkLM div:not(.proven), .account-inline:not(.proven)')) {
+      element.classList.add('proven');
+      let userElement, user, target;
+      if (element.classList.contains('account-group')) {
+        // twitter.com
+        userElement = element.querySelector('.username b');
+        if (!userElement)
+          continue;
+        user = userElement.innerText;
+        if (!user)
+          continue;
+        target = element.querySelector('.UserBadges');
+      } else if (element.classList.contains('account-inline')) {
+        // tweetdeck.twitter.com
+        userElement = element.querySelector('.username');
+        user = userElement.innerText.replace('@', '');
+        userElement.outerHTML = '<span class="UserBadges"></span> ' + userElement.outerHTML;
+        target = element.querySelector('.UserBadges');
+      } else {
+        // mobile.twitter.com
+        user = element.innerText.replace('@', '');
+        target = element.parentElement.previousSibling;
+      }
+      const proofs = await getUser(user) || []
+      for (const {proof_type, nametag, service_url} of proofs)  {
+        if (proof_type === 'twitter')
+          continue;
+        target.innerHTML += oneLineTrim`
+        <a href="${service_url}" title="${nametag}">
+          <span style="${getStyle()}">${icons[proof_type]}</span>
+        </a>`;
+      }
+    }
+  }
+  if (window.location.host.endsWith('twitter.com'))
+    window.setInterval(twitterTimeline, 1000);
 })();
