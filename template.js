@@ -90,40 +90,44 @@
   if (window.location.host.endsWith('twitter.com'))
     window.setInterval(twitterProfiles, 1000);
 
-  async function twitterTimeline()  {
+  async function addTwitterTimelineBadges(element) {
+    let userElement, user, target;
+    if (element.classList.contains('account-group')) {
+      // twitter.com
+      userElement = element.querySelector('.username b');
+      if (!userElement)
+        return;
+      user = userElement.innerText;
+      if (!user)
+        return;
+      target = element.querySelector('.UserBadges');
+    } else if (element.classList.contains('account-inline')) {
+      // tweetdeck.twitter.com
+      userElement = element.querySelector('.username');
+      user = userElement.innerText.replace('@', '');
+      userElement.outerHTML = '<span class="UserBadges"></span> ' + userElement.outerHTML;
+      target = element.querySelector('.UserBadges');
+    } else {
+      // mobile.twitter.com
+      user = element.innerText.replace('@', '');
+      target = element.parentElement.previousSibling;
+    }
+    const proofs = await getUser(user) || []
+    for (const {proof_type, nametag, service_url} of proofs)  {
+      if (proof_type === 'twitter')
+        continue;
+      target.innerHTML += oneLineTrim`
+      <a href="${service_url}" title="${nametag}">
+        <span style="${getStyle()}">${icons[proof_type]}</span>
+      </a>`;
+    }
+  }
+
+  function twitterTimeline()  {
     for (const element of document.querySelectorAll(
       '.account-group:not(.proven), ._3Qd1FkLM div:not(.proven), .account-inline:not(.proven)')) {
       element.classList.add('proven');
-      let userElement, user, target;
-      if (element.classList.contains('account-group')) {
-        // twitter.com
-        userElement = element.querySelector('.username b');
-        if (!userElement)
-          continue;
-        user = userElement.innerText;
-        if (!user)
-          continue;
-        target = element.querySelector('.UserBadges');
-      } else if (element.classList.contains('account-inline')) {
-        // tweetdeck.twitter.com
-        userElement = element.querySelector('.username');
-        user = userElement.innerText.replace('@', '');
-        userElement.outerHTML = '<span class="UserBadges"></span> ' + userElement.outerHTML;
-        target = element.querySelector('.UserBadges');
-      } else {
-        // mobile.twitter.com
-        user = element.innerText.replace('@', '');
-        target = element.parentElement.previousSibling;
-      }
-      const proofs = await getUser(user) || []
-      for (const {proof_type, nametag, service_url} of proofs)  {
-        if (proof_type === 'twitter')
-          continue;
-        target.innerHTML += oneLineTrim`
-        <a href="${service_url}" title="${nametag}">
-          <span style="${getStyle()}">${icons[proof_type]}</span>
-        </a>`;
-      }
+      addTwitterTimelineBadges(element);
     }
   }
   if (window.location.host.endsWith('twitter.com'))
