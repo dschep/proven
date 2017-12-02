@@ -87,8 +87,6 @@
       }
     }
   }
-  if (window.location.host.endsWith('twitter.com'))
-    window.setInterval(twitterProfiles, 1000);
 
   async function addTwitterTimelineBadges(element) {
     let userElement, user, target;
@@ -130,6 +128,9 @@
       addTwitterTimelineBadges(element);
     }
   }
+
   if (window.location.host.endsWith('twitter.com'))
     window.setInterval(twitterTimeline, 1000);
+  if (window.location.host.endsWith('twitter.com'))
+    window.setInterval(twitterProfiles, 1000);
 })();
