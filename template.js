@@ -1,6 +1,7 @@
 (function() {
   'use strict';
 
+  // template literal tag to remove new line and whitespace at start&end of line
   const oneLineTrim = (literals, ...substitutions) => {
     let result = '';
     for (const i in literals) {
@@ -11,6 +12,7 @@
     return result;
   };
 
+  // get style tag contents. Height & invert if night mode detected
   const getStyle = () => {
     const styleSheetNames = new Set(Array.from(document.styleSheets).map(({href}) => href && href.split('/').pop()));
     let style = 'margin-right: 2px;';
@@ -20,6 +22,7 @@
     return style;
   };
 
+  // icons SVGs, placeholders get replaced by inline_images.py
   const icons = {
     keybase: '%%keybase',
     hackernews: '%%hackernews',
@@ -30,12 +33,14 @@
     facebook: '%%facebook',
   };
 
-  const users = new Map();
+  // Fetch proofs from Keybase
   async function fetchProofs(username, service = 'twitter') {
-    const resp = await fetch(`https://keybase.io/_/api/1.0/user/lookup.json?${service}=${username}`, {
-      method: 'GET',
-      cors: true,
-    });
+    const resp = await fetch(
+      `https://keybase.io/_/api/1.0/user/lookup.json?${service}=${username}`,
+      {
+        method: 'GET',
+        cors: true,
+      });
     const respObj = await resp.json();
     if (!respObj.them[0])
       return;
@@ -45,12 +50,17 @@
         proof_type: 'keybase',
     }, ...respObj.them[0].proofs_summary.all];
   }
+
+  const users = new Map(); // user proof cache
+  // Get user's proofs, from cache or fetch and update cache
   function getUser(username, service = 'twitter')  {
     if (!users.has(username)) {
       users.set(username, fetchProofs(username, service));
     }
     return users.get(username);
   };
+
+  // Add fetch proofs for profile elements and add badges 
   async function twitterProfiles() {
     let user;
     const element = document.querySelector('.ProfileCard-screenname:not(.proven),.ProfileHeaderCard-screenname:not(.proven)');
@@ -88,6 +98,7 @@
     }
   }
 
+  // Add fetch proofs for timeline elements and add badges 
   async function addTwitterTimelineBadges(element) {
     let userElement, user, target;
     if (element.classList.contains('account-group')) {
@@ -121,6 +132,7 @@
     }
   }
 
+  // select the elements for timelines and call func to add badges
   function twitterTimeline()  {
     for (const element of document.querySelectorAll(
       '.account-group:not(.proven), ._3Qd1FkLM div:not(.proven), .account-inline:not(.proven)')) {
@@ -129,6 +141,7 @@
     }
   }
 
+  // call timeline&profile funcs every second since twitter constantly updates
   if (window.location.host.endsWith('twitter.com'))
     window.setInterval(twitterTimeline, 1000);
   if (window.location.host.endsWith('twitter.com'))
