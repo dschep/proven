@@ -1,6 +1,5 @@
 # ![](./icons/proven32.png) Proven
-A [Keybase](https://keybase.io) based alternative to Twitter's verified
-accounts.
+An alternative to Twitter's verified program powered by [Keybase](https://keybase.io).
 
 Proven is a browser extension that adds badges like for keybase, github, etc
 next to users names like Twitter's verified badge but based what accounts the
