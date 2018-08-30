@@ -11,6 +11,6 @@ In addition to twitter, it adds badges on Hacker News too.
 [![](./icons/chrome-badge.png)](https://chrome.google.com/webstore/detail/proven/algligpkkhlodbalbiilbfiihcooekjn)
 
 ![](./screenshots/screenshot.png)
+![](./screenshots/screenshot4.png)
 ![](./screenshots/screenshot2.png)
 ![](./screenshots/screenshot3.png)
-![](./screenshots/screenshot4.png)
