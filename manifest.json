@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Proven",
   "description": "An alternative to Twitter's verified accounts based on Keybase",
-  "version": "1.7",
+  "version": "2.0",
   "icons": {
     "32": "icons/proven32.png",
     "48": "icons/proven48.png",
@@ -13,7 +13,8 @@
   "content_scripts": [
     {
       "matches": [
-        "https://*.twitter.com/*"
+        "https://*.twitter.com/*",
+        "https://news.ycombinator.com/*"
       ],
       "js": [
         "index.js"
@@ -22,6 +23,7 @@
   ],
   "permissions": [
     "https://keybase.io/_/api/1.0/*",
-    "webRequest"
+    "webRequest",
+    "storage"
   ]
 }

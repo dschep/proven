@@ -1,6 +1,21 @@
 (function() {
   'use strict';
 
+  const getFromStorage = (keys) => {
+    if (chrome.storage) {
+      return new Promise((resolve, reject) => chrome.storage.local.get(keys, resolve));
+    } else {
+      return browser.storage.local.set(keys);
+    }
+  };
+  const setToStorage = (object) => {
+    if (chrome.storage) {
+      return new Promise((resolve, reject) => chrome.storage.local.set(object, resolve));
+    } else {
+      return browser.storage.local.set(object);
+    }
+  };
+
   // template literal tag to remove new line and whitespace at start&end of line
   const oneLineTrim = (literals, ...substitutions) => {
     let result = '';
@@ -31,31 +46,52 @@
     generic_web_site: '%%generic_web_site',
     dns: '%%generic_web_site',
     facebook: '%%facebook',
+    twitter: '%%twitter',
   };
 
+  // Get proofs from storage or Keybase
+  async function getProofsFromStorageOrKeybase(username, service = 'twitter') {
+    const key = `${service}://${username}`;
+    const fromStorage = await getFromStorage(key);
+    const timestamp = Math.round((new Date()).getTime() / 1000);
+    if (fromStorage[key] && fromStorage[key].timestamp > timestamp - 3*60*60) {
+      return fromStorage[key].proofs;
+    } else {
+      const newProofs = await fetchProofs(username, service);
+      await setToStorage({[key]: {proofs: newProofs, timestamp}});
+      return newProofs;
+    }
+  }
+
   // Fetch proofs from Keybase
-  async function fetchProofs(username, service = 'twitter') {
+  async function fetchProofs(username, service = 'twitter', retry = 3) {
     const resp = await fetch(
       `https://keybase.io/_/api/1.0/user/lookup.json?${service}=${username}`,
       {
         method: 'GET',
         cors: true,
       });
+    if (resp.status !== 200) {
+      if (retry === 0) {
+        throw e;
+      }
+      return new Promise((resolve) => setTimeout(() => resolve(fetchProofs(username, service, retry - 1)), 1000))
+    }
     const respObj = await resp.json();
     if (!respObj.them[0])
-      return;
+      return [];
     return [{
       nametag: username,
-      service_url: `https://keybase.io/${username}`,
+      service_url: `https://keybase.io/${respObj.them[0].basics.username}`,
         proof_type: 'keybase',
     }, ...respObj.them[0].proofs_summary.all];
   }
 
   const users = new Map(); // user proof cache
   // Get user's proofs, from cache or fetch and update cache
-  function getUser(username, service = 'twitter')  {
+  async function getUser(username, service = 'twitter')  {
     if (!users.has(username)) {
-      users.set(username, fetchProofs(username, service));
+      users.set(username, getProofsFromStorageOrKeybase(username, service));
     }
     return users.get(username);
   };
@@ -141,9 +177,25 @@
     }
   }
 
+  async function hackerNews() {
+    for (const element of Array.from(document.querySelectorAll('.hnuser:not(.proven)'))) {
+      element.classList.add('proven');
+      const user = element.innerText;
+      const proofs = await getUser(user, 'hackernews');
+      for (const {proof_type, nametag, service_url} of proofs) {
+        if (proof_type === 'hackernews') return;
+        element.innerHTML += ` <a href="${service_url}">
+          <span style="${getStyle()}">${icons[proof_type]}</span>
+        </a>`;
+      }
+    }
+  }
+
   // call timeline&profile funcs every second since twitter constantly updates
   if (window.location.host.endsWith('twitter.com'))
     window.setInterval(twitterTimeline, 1000);
   if (window.location.host.endsWith('twitter.com'))
     window.setInterval(twitterProfiles, 1000);
+  if (window.location.host === 'news.ycombinator.com')
+    hackerNews();
 })();

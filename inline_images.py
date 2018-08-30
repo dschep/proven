@@ -8,5 +8,6 @@ template = DoublePercentTemplate(open('template.js').read())
 images = {name: open(f'icons/{name}.svg').read() for name in ['facebook',
                                                         'generic_web_site',
                                                         'github', 'hackernews',
-                                                        'keybase', 'reddit']}
+                                                        'keybase', 'reddit',
+                                                        'twitter']}
 print(template.substitute(images))
