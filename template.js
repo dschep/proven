@@ -100,6 +100,7 @@
 
   // Add fetch proofs for profile elements and add badges 
   async function twitterProfiles() {
+    const {keybaseBadgeOnly} = await getFromStorage('keybaseBadgeOnly');
     let user;
     const element = document.querySelector('.ProfileCard-screenname:not(.proven),.ProfileHeaderCard-screenname:not(.proven)');
     if (element) {
@@ -107,7 +108,7 @@
       element.classList.add('proven');
       const proofs = await getUser(user) || []
       for (const {proof_type, nametag, service_url} of proofs) {
-        if (proof_type === 'twitter')
+        if (proof_type === 'twitter' || (proof_type !== 'keybase' && keybaseBadgeOnly))
           continue;
         element.innerHTML += oneLineTrim`
         <br/>
@@ -123,7 +124,7 @@
       mobileElement.classList.add('proven');
       const proofs = await getUser(user) || []
       for (const {proof_type, nametag, service_url} of proofs) {
-        if (proof_type === 'twitter')
+        if (proof_type === 'twitter' || (proof_type !== 'keybase' && keybaseBadgeOnly))
           continue;
         mobileElement.innerHTML += oneLineTrim`
         <br/>
@@ -137,7 +138,7 @@
   }
 
   // Add fetch proofs for timeline elements and add badges 
-  async function addTwitterTimelineBadges(element) {
+  async function addTwitterTimelineBadges(element, keybaseBadgeOnly) {
     let userElement, user, target;
     if (element.classList.contains('account-group')) {
       // twitter.com
@@ -161,9 +162,9 @@
     }
     const proofs = await getUser(user) || []
     for (const {proof_type, nametag, service_url} of proofs)  {
-      if (proof_type === 'twitter')
+      if (proof_type === 'twitter' || (proof_type !== 'keybase' && keybaseBadgeOnly))
         continue;
-      target.innerHTML += oneLineTrim`
+      target.innerHTML += oneLineTrim`&nbsp;
       <a href="${service_url}" title="${nametag}" rel="noreferrer noopener">
         <span style="${getStyle()}">${icons[proof_type]}</span>
       </a>`;
@@ -171,21 +172,23 @@
   }
 
   // select the elements for timelines and call func to add badges
-  function twitterTimeline()  {
+  async function twitterTimeline()  {
+    const {keybaseBadgeOnly} = await getFromStorage('keybaseBadgeOnly');
     for (const element of document.querySelectorAll(
       '.account-group:not(.proven), ._3Qd1FkLM div:not(.proven), .account-inline:not(.proven)')) {
       element.classList.add('proven');
-      addTwitterTimelineBadges(element);
+      addTwitterTimelineBadges(element, keybaseBadgeOnly);
     }
   }
 
   async function hackerNews() {
+    const {keybaseBadgeOnly} = await getFromStorage('keybaseBadgeOnly');
     for (const element of Array.from(document.querySelectorAll('.hnuser:not(.proven)'))) {
       element.classList.add('proven');
       const user = element.innerText;
       const proofs = await getUser(user, 'hackernews');
       for (const {proof_type, nametag, service_url} of proofs.slice().reverse()) {
-        if (proof_type === 'hackernews') continue;
+        if (proof_type === 'hackernews' || (proof_type !== 'keybase' && keybaseBadgeOnly)) continue;
         element.insertAdjacentHTML('afterend', `
           <a href="${service_url}" rel="noreferrer noopener"><span style="${getStyle()}">${icons[proof_type]}</span></a>`);
       }

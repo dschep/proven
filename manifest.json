@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Proven",
   "description": "A Keybase powered alternative to Twitter's verified program",
-  "version": "2.2.1",
+  "version": "2.3",
   "icons": {
     "32": "icons/proven32.png",
     "48": "icons/proven48.png",
@@ -25,5 +25,8 @@
     "https://keybase.io/_/api/1.0/*",
     "webRequest",
     "storage"
-  ]
+  ],
+  "options_ui": {
+      "page": "options.html"
+  }
 }
