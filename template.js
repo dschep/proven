@@ -183,7 +183,7 @@
       const user = element.innerText;
       const proofs = await getUser(user, 'hackernews');
       for (const {proof_type, nametag, service_url} of proofs) {
-        if (proof_type === 'hackernews') return;
+        if (proof_type === 'hackernews') continue;
         element.innerHTML += ` <a href="${service_url}">
           <span style="${getStyle()}">${icons[proof_type]}</span>
         </a>`;
