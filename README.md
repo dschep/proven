@@ -7,6 +7,9 @@ user has posted proofs for Keybase. See the screenshot for what it looks like.
 
 In addition to twitter, it adds badges on Hacker News too.
 
+To chat about Proven, pop into the [open Keybase Team](https://keybase.io/team/proven_extension)
+for the project.
+
 [![](./icons/firefox-badge.png)](https://addons.mozilla.org/en-US/firefox/addon/proven/)
 [![](./icons/chrome-badge.png)](https://chrome.google.com/webstore/detail/proven/algligpkkhlodbalbiilbfiihcooekjn)
 
