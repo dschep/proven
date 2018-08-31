@@ -34,6 +34,8 @@
     if (styleSheetNames.has('nightmode_twitter_core.bundle.css') ||
         document.body.parentElement.classList.contains('dark'))
       style += 'filter: invert(100%);';
+    if (window.location.host === 'news.ycombinator.com')
+      style += 'opacity: 0.6;'
     return style;
   };
 
