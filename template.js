@@ -12,7 +12,7 @@
     if (chrome.storage) {
       return new Promise((resolve, reject) => chrome.storage.local.set(object, resolve));
     } else {
-      return browser.storage.local.set(object);
+      return browser.storage.local.get(object);
     }
   };
 
