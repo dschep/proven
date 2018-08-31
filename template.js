@@ -111,7 +111,7 @@
           continue;
         element.innerHTML += oneLineTrim`
         <br/>
-        <a href="${service_url}" class="ProfileHeaderCard-screennameLink u-linkComplex js-nav">
+        <a href="${service_url}" class="ProfileHeaderCard-screennameLink u-linkComplex js-nav" rel="noreferrer noopener">
           <b><span style="${getStyle()}">${icons[proof_type]}</span> ${nametag}</b>
         </a>
         `;
@@ -128,7 +128,7 @@
         mobileElement.innerHTML += oneLineTrim`
         <br/>
         <span class="rn-13yce4e rn-fnigne rn-ndvcnb rn-gxnn5r rn-deolkf rn-6gldlz rn-1471scf rn-1lw9tu2 rn-ogifhg rn-7cikom rn-1it3c9n rn-ad9z0x rn-1mnahxq rn-61z16t rn-p1pxzi rn-11wrixw rn-wk8lta rn-9aemit rn-1mdbw0j rn-gy4na3 rn-bauka4 rn-irrty rn-qvutc0">
-          <a style="color:rgb(101,119,134);text-decoration:none;" href="${service_url}" style="" class="">
+          <a style="color:rgb(101,119,134);text-decoration:none;" href="${service_url}" style="" class="" rel="noreferrer noopener">
             <span style="${getStyle()}">${icons[proof_type]}</span> ${nametag}
           </a>
         </span>`;
@@ -164,7 +164,7 @@
       if (proof_type === 'twitter')
         continue;
       target.innerHTML += oneLineTrim`
-      <a href="${service_url}" title="${nametag}">
+      <a href="${service_url}" title="${nametag}" rel="noreferrer noopener">
         <span style="${getStyle()}">${icons[proof_type]}</span>
       </a>`;
     }
@@ -186,7 +186,7 @@
       const proofs = await getUser(user, 'hackernews');
       for (const {proof_type, nametag, service_url} of proofs) {
         if (proof_type === 'hackernews') continue;
-        element.innerHTML += ` <a href="${service_url}">
+        element.innerHTML += ` <a href="${service_url}" rel="noreferrer noopener">
           <span style="${getStyle()}">${icons[proof_type]}</span>
         </a>`;
       }
