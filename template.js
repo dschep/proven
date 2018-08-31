@@ -184,11 +184,10 @@
       element.classList.add('proven');
       const user = element.innerText;
       const proofs = await getUser(user, 'hackernews');
-      for (const {proof_type, nametag, service_url} of proofs) {
+      for (const {proof_type, nametag, service_url} of proofs.reverse()) {
         if (proof_type === 'hackernews') continue;
-        element.innerHTML += ` <a href="${service_url}" rel="noreferrer noopener">
-          <span style="${getStyle()}">${icons[proof_type]}</span>
-        </a>`;
+        element.insertAdjacentHTML('afterend', `
+          <a href="${service_url}" rel="noreferrer noopener"><span style="${getStyle()}">${icons[proof_type]}</span></a>`);
       }
     }
   }
