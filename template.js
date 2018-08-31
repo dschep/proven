@@ -5,14 +5,14 @@
     if (chrome.storage) {
       return new Promise((resolve, reject) => chrome.storage.local.get(keys, resolve));
     } else {
-      return browser.storage.local.set(keys);
+      return browser.storage.local.get(keys);
     }
   };
   const setToStorage = (object) => {
     if (chrome.storage) {
       return new Promise((resolve, reject) => chrome.storage.local.set(object, resolve));
     } else {
-      return browser.storage.local.get(object);
+      return browser.storage.local.set(object);
     }
   };
 
