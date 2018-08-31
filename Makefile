@@ -1,5 +1,5 @@
 SOURCES := template.js icons/facebook.svg icons/generic_web_site.svg icons/github.svg icons/hackernews.svg icons/keybase.svg icons/reddit.svg icons/twitter.svg
-ZIP_CONTENTS := index.js LICENSE manifest.json icons/proven32.png icons/proven48.png icons/proven96.png icons/proven128.png icons/proven512.png
+ZIP_CONTENTS := index.js LICENSE manifest.json icons/proven32.png icons/proven48.png icons/proven96.png icons/proven128.png icons/proven512.png options.js options.html
 
 proven.zip: $(ZIP_CONTENTS)
 	zip -r -FS $@ $^
