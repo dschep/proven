@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Proven",
   "description": "A Keybase powered alternative to Twitter's verified program",
-  "version": "2.2",
+  "version": "2.2.1",
   "icons": {
     "32": "icons/proven32.png",
     "48": "icons/proven48.png",
