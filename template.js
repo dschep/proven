@@ -107,15 +107,22 @@
       user = element.querySelector('b').innerText;
       element.classList.add('proven');
       const proofs = await getUser(user) || []
+      let shownWebsite = [];
       for (const {proof_type, nametag, service_url} of proofs) {
         if (proof_type === 'twitter' || (proof_type !== 'keybase' && keybaseBadgeOnly))
           continue;
+        if ((proof_type === "dns") || (proof_type === "generic_web_site")) {
+          if (shownWebsite.includes(nametag))
+            continue;
+        }
         element.innerHTML += oneLineTrim`
         <br/>
         <a href="${service_url}" class="ProfileHeaderCard-screennameLink u-linkComplex js-nav" rel="noreferrer noopener">
           <b><span style="${getStyle()}">${icons[proof_type]}</span> ${nametag}</b>
         </a>
         `;
+        if ((proof_type === "dns") || (proof_type === "generic_web_site"))
+          shownWebsite.push(nametag);
       }
     }
     const mobileElement = document.querySelector('._2CFyTHU5:not(.proven)');
@@ -123,9 +130,14 @@
       user = mobileElement.querySelector('.Z5IeoGpY').innerText.replace('@', '');
       mobileElement.classList.add('proven');
       const proofs = await getUser(user) || []
+      let shownWebsite = [];
       for (const {proof_type, nametag, service_url} of proofs) {
         if (proof_type === 'twitter' || (proof_type !== 'keybase' && keybaseBadgeOnly))
           continue;
+        if ((proof_type === "dns") || (proof_type === "generic_web_site")) {
+          if (shownWebsite.includes(nametag))
+            continue;
+        }
         mobileElement.innerHTML += oneLineTrim`
         <br/>
         <span class="rn-13yce4e rn-fnigne rn-ndvcnb rn-gxnn5r rn-deolkf rn-6gldlz rn-1471scf rn-1lw9tu2 rn-ogifhg rn-7cikom rn-1it3c9n rn-ad9z0x rn-1mnahxq rn-61z16t rn-p1pxzi rn-11wrixw rn-wk8lta rn-9aemit rn-1mdbw0j rn-gy4na3 rn-bauka4 rn-irrty rn-qvutc0">
@@ -133,6 +145,8 @@
             <span style="${getStyle()}">${icons[proof_type]}</span> ${nametag}
           </a>
         </span>`;
+        if ((proof_type === "dns") || (proof_type === "generic_web_site"))
+          shownWebsite.push(nametag);
       }
     }
   }
@@ -161,13 +175,20 @@
       target = element.parentElement.previousSibling;
     }
     const proofs = await getUser(user) || []
+    let shownWebsite = [];
     for (const {proof_type, nametag, service_url} of proofs)  {
       if (proof_type === 'twitter' || (proof_type !== 'keybase' && keybaseBadgeOnly))
         continue;
+      if ((proof_type === "dns") || (proof_type === "generic_web_site")) {
+        if (shownWebsite.includes(nametag))
+          continue;
+        }
       target.innerHTML += oneLineTrim`&nbsp;
       <a href="${service_url}" title="${nametag}" rel="noreferrer noopener">
         <span style="${getStyle()}">${icons[proof_type]}</span>
       </a>`;
+      if ((proof_type === "dns") || (proof_type === "generic_web_site"))
+          shownWebsite.push(nametag);
     }
   }
 
@@ -187,10 +208,17 @@
       element.classList.add('proven');
       const user = element.innerText;
       const proofs = await getUser(user, 'hackernews');
+      let shownWebsite = [];
       for (const {proof_type, nametag, service_url} of proofs.slice().reverse()) {
         if (proof_type === 'hackernews' || (proof_type !== 'keybase' && keybaseBadgeOnly)) continue;
+        if ((proof_type === "dns") || (proof_type === "generic_web_site")) {
+          if (shownWebsite.includes(nametag))
+            continue;
+        }
         element.insertAdjacentHTML('afterend', `
           <a href="${service_url}" rel="noreferrer noopener"><span style="${getStyle()}">${icons[proof_type]}</span></a>`);
+        if ((proof_type === "dns") || (proof_type === "generic_web_site"))
+          shownWebsite.push(nametag);
       }
     }
   }
