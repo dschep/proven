@@ -1,6 +1,11 @@
 (function() {
   'use strict';
 
+  // selector for just the @username in the mobile timeline
+  const mobileTimelineSelector = '#react-root > div > div > div > main > div > div.css-1dbjc4n.r-aqfbo4.r-e84r5y.r-16y2uox > div > div.css-1dbjc4n.r-14lw9ot.r-1jgb5lz.r-1ye8kvj.r-13qz1uu.r-184en5c > div > div > div > div > div.css-1dbjc4n.r-1jgb5lz.r-1ye8kvj.r-13qz1uu > div > div > section > div > div > div > div > div > div > article > div > div.css-1dbjc4n.r-1iusvr4.r-46vdb2.r-5f2r5o.r-bcqeeo > div.css-1dbjc4n.r-19i43ro > div.css-1dbjc4n.r-18u37iz.r-1wtj0ep.r-zl2h9q > div.css-1dbjc4n.r-1d09ksm.r-18u37iz.r-1wbh5a2 > div.css-1dbjc4n.r-1wbh5a2 > a > div > div.css-1dbjc4n.r-18u37iz.r-1wbh5a2.r-1f6r7vd > div > span'
+  // selector for just the @username in mobile profiles
+  const mobileProfileSelector = '#react-root > div > div > div > main > div > div.css-1dbjc4n.r-aqfbo4.r-e84r5y.r-16y2uox > div > div.css-1dbjc4n.r-14lw9ot.r-1jgb5lz.r-1ye8kvj.r-13qz1uu.r-184en5c > div > div > div > div > div:nth-child(1) > div > div.css-1dbjc4n.r-15d164r.r-1g94qm0 > div > div > div.css-1dbjc4n.r-18u37iz.r-1wbh5a2 > div > span.css-901oao.css-16my406.r-1qd0xha.r-ad9z0x.r-bcqeeo.r-qvutc0'
+
   const icon = proof_type => {
     if (proof_type === 'keybase') {
       return '%%keybase'
@@ -116,22 +121,24 @@
         `;
       }
     }
-    const mobileElement = document.querySelector('._2CFyTHU5:not(.proven)');
+    const mobileElement = document.querySelector(`${mobileProfileSelector}:not(.proven)`);
     if (mobileElement) {
-      user = mobileElement.querySelector('.Z5IeoGpY').innerText.replace('@', '');
+      user = mobileElement.innerText.replace('@', '');
       mobileElement.classList.add('proven');
       const proofs = await getUser(user) || []
+      let proof_badges = ''
       for (const {proof_type, nametag, service_url} of proofs) {
         if (proof_type === 'twitter' || (proof_type !== 'keybase' && keybaseBadgeOnly))
           continue;
-        mobileElement.innerHTML += oneLineTrim`
+        proof_badges += oneLineTrim`
         <br/>
-        <span class="rn-13yce4e rn-fnigne rn-ndvcnb rn-gxnn5r rn-deolkf rn-6gldlz rn-1471scf rn-1lw9tu2 rn-ogifhg rn-7cikom rn-1it3c9n rn-ad9z0x rn-1mnahxq rn-61z16t rn-p1pxzi rn-11wrixw rn-wk8lta rn-9aemit rn-1mdbw0j rn-gy4na3 rn-bauka4 rn-irrty rn-qvutc0">
+        <span>
           <a style="color:rgb(101,119,134);text-decoration:none;" href="${service_url}" style="" class="" rel="noreferrer noopener">
           <span style="${getStyle()}">${icon(proof_type)}</span> ${nametag}
           </a>
         </span>`;
       }
+      mobileElement.parentElement.innerHTML +=  proof_badges
     }
   }
 
@@ -156,7 +163,7 @@
     } else {
       // mobile.twitter.com
       user = element.innerText.replace('@', '');
-      target = element.parentElement.previousSibling;
+      target = element.parentElement.parentElement.previousSibling;
     }
     const proofs = await getUser(user) || []
     for (const {proof_type, nametag, service_url} of proofs)  {
@@ -173,7 +180,7 @@
   async function twitterTimeline()  {
     const {keybaseBadgeOnly} = await getFromStorage('keybaseBadgeOnly');
     for (const element of document.querySelectorAll(
-      '.account-group:not(.proven), ._3Qd1FkLM div:not(.proven), .account-inline:not(.proven)')) {
+      `.account-group:not(.proven), ${mobileTimelineSelector}:not(.proven), .account-inline:not(.proven)`)) {
       element.classList.add('proven');
       addTwitterTimelineBadges(element, keybaseBadgeOnly);
     }
