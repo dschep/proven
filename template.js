@@ -1,7 +1,15 @@
 (function() {
   'use strict';
 
-  const mastodonInstances = ['mastodon.technology', 'mastodon.social'];
+  const icon = proof_type => {
+    if (proof_type === 'keybase') {
+      return '%%keybase'
+    }
+    if (['generic_web_site', 'dns'].includes(proof_type))
+      return `<img style="height:16px" src="https://keybase.io/images/paramproofs/services/web/logo_black_16@2x.png">`
+    return `<img style="height:16px" src="https://keybase.io/images/paramproofs/services/${proof_type}/logo_black_16@2x.png">`
+  }
+
 
   const getFromStorage = (keys) => {
     if (chrome.storage) {
@@ -39,22 +47,6 @@
     if (window.location.host === 'news.ycombinator.com')
       style += 'opacity: 0.6;'
     return style;
-  };
-
-  // icons SVGs, placeholders get replaced by inline_images.py
-  const mastodonIcon = '%%mastodon';
-  const icons = {
-    keybase: '%%keybase',
-    hackernews: '%%hackernews',
-    reddit: '%%reddit',
-    github: '%%github',
-    generic_web_site: '%%generic_web_site',
-    dns: '%%generic_web_site',
-    facebook: '%%facebook',
-    twitter: '%%twitter',
-    unknown: '%%unknown',
-    ...mastodonInstances.reduce(
-      (result, mastodonInstance) => ({...result, [mastodonInstance]: mastodonIcon}), {}),
   };
 
   // Get proofs from storage or Keybase
@@ -119,7 +111,7 @@
         element.innerHTML += oneLineTrim`
         <br/>
         <a href="${service_url}" class="ProfileHeaderCard-screennameLink u-linkComplex js-nav" rel="noreferrer noopener">
-          <b><span style="${getStyle()}">${icons[proof_type]||icons.unknown}</span> ${nametag}</b>
+          <b><span style="${getStyle()}">${icon(proof_type)}</span> ${nametag}</b>
         </a>
         `;
       }
@@ -136,7 +128,7 @@
         <br/>
         <span class="rn-13yce4e rn-fnigne rn-ndvcnb rn-gxnn5r rn-deolkf rn-6gldlz rn-1471scf rn-1lw9tu2 rn-ogifhg rn-7cikom rn-1it3c9n rn-ad9z0x rn-1mnahxq rn-61z16t rn-p1pxzi rn-11wrixw rn-wk8lta rn-9aemit rn-1mdbw0j rn-gy4na3 rn-bauka4 rn-irrty rn-qvutc0">
           <a style="color:rgb(101,119,134);text-decoration:none;" href="${service_url}" style="" class="" rel="noreferrer noopener">
-            <span style="${getStyle()}">${icons[proof_type]}</span> ${nametag}
+          <span style="${getStyle()}">${icon(proof_type)}</span> ${nametag}
           </a>
         </span>`;
       }
@@ -172,7 +164,7 @@
         continue;
       target.innerHTML += oneLineTrim`&nbsp;
       <a href="${service_url}" title="${nametag}" rel="noreferrer noopener">
-        <span style="${getStyle()}">${icons[proof_type]}</span>
+        <span style="${getStyle()}">${icon(proof_type)}</span>
       </a>`;
     }
   }
