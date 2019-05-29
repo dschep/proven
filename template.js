@@ -6,8 +6,8 @@
       return '%%keybase'
     }
     if (['generic_web_site', 'dns'].includes(proof_type))
-      return `<img style="height:16px" src="https://keybase.io/images/paramproofs/services/web/logo_black_16@2x.png">`
-    return `<img style="height:16px" src="https://keybase.io/images/paramproofs/services/${proof_type}/logo_black_16@2x.png">`
+      return `<img style="height:12px" src="https://keybase.io/images/paramproofs/services/web/logo_black_16@2x.png">`
+    return `<img style="height:12px" src="https://keybase.io/images/paramproofs/services/${proof_type}/logo_black_16@2x.png">`
   }
 
 
@@ -188,7 +188,7 @@
       for (const {proof_type, nametag, service_url} of proofs.slice().reverse()) {
         if (proof_type === 'hackernews' || (proof_type !== 'keybase' && keybaseBadgeOnly)) continue;
         element.insertAdjacentHTML('afterend', `
-          <a href="${service_url}" rel="noreferrer noopener"><span style="${getStyle()}">${icons[proof_type]}</span></a>`);
+          <a href="${service_url}" rel="noreferrer noopener"><span style="${getStyle()}">${icon(proof_type)}</span></a>`);
       }
     }
   }
