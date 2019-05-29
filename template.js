@@ -4,6 +4,8 @@
   // selector for just the @username in the mobile timeline
   const mobileTimelineSelector =
     "#react-root > div > div > div > main > div > div.css-1dbjc4n.r-aqfbo4.r-e84r5y.r-16y2uox > div > div.css-1dbjc4n.r-14lw9ot.r-1jgb5lz.r-1ye8kvj.r-13qz1uu.r-184en5c > div > div > div > div > div.css-1dbjc4n.r-1jgb5lz.r-1ye8kvj.r-13qz1uu > div > div > section > div > div > div > div > div > div > article > div > div.css-1dbjc4n.r-1iusvr4.r-46vdb2.r-5f2r5o.r-bcqeeo > div.css-1dbjc4n.r-19i43ro > div.css-1dbjc4n.r-18u37iz.r-1wtj0ep.r-zl2h9q > div.css-1dbjc4n.r-1d09ksm.r-18u37iz.r-1wbh5a2 > div.css-1dbjc4n.r-1wbh5a2 > a > div > div.css-1dbjc4n.r-18u37iz.r-1wbh5a2.r-1f6r7vd > div > span";
+  const mobileTweetSelector =
+    "#react-root > div > div > div > main > div > div.css-1dbjc4n.r-aqfbo4.r-e84r5y.r-16y2uox > div > div.css-1dbjc4n.r-14lw9ot.r-1jgb5lz.r-1ye8kvj.r-13qz1uu.r-184en5c > div > div > div > div > section > div > div > div > div > div > article > li > div > div.css-1dbjc4n.r-1iusvr4.r-46vdb2.r-1777fci.r-5f2r5o.r-bcqeeo > div > div.css-1dbjc4n.r-1wbh5a2.r-dnmrzs > a > div > div.css-1dbjc4n.r-18u37iz.r-1wbh5a2 > div > span";
   // selector for just the @username in mobile profiles
   const mobileProfileSelector =
     "#react-root > div > div > div > main > div > div.css-1dbjc4n.r-aqfbo4.r-e84r5y.r-16y2uox > div > div.css-1dbjc4n.r-14lw9ot.r-1jgb5lz.r-1ye8kvj.r-13qz1uu.r-184en5c > div > div > div > div > div:nth-child(1) > div > div.css-1dbjc4n.r-15d164r.r-1g94qm0 > div > div > div.css-1dbjc4n.r-18u37iz.r-1wbh5a2 > div > span.css-901oao.css-16my406.r-1qd0xha.r-ad9z0x.r-bcqeeo.r-qvutc0";
@@ -234,7 +236,7 @@
       "colors"
     ]);
     for (const element of document.querySelectorAll(
-      `.account-group:not(.proven), ${mobileTimelineSelector}:not(.proven), .account-inline:not(.proven)`
+      `.account-group:not(.proven), ${mobileTimelineSelector}:not(.proven), ${mobileTweetSelector}:not(.proven), .account-inline:not(.proven)`
     )) {
       element.classList.add("proven");
       addTwitterTimelineBadges(element, keybaseBadgeOnly, colors);
