@@ -114,7 +114,7 @@
     if (!respObj.them[0]) return [];
     return [
       {
-        nametag: username,
+        nametag: respObj.them[0].basics.username,
         service_url: `https://keybase.io/${respObj.them[0].basics.username}`,
         proof_type: "keybase"
       },
