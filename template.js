@@ -1,6 +1,8 @@
 (function() {
   'use strict';
 
+  const mastodonInstances = ['mastodon.technology', 'mastodon.social'];
+
   const getFromStorage = (keys) => {
     if (chrome.storage) {
       return new Promise((resolve, reject) => chrome.storage.local.get(keys, resolve));
@@ -40,6 +42,7 @@
   };
 
   // icons SVGs, placeholders get replaced by inline_images.py
+  const mastodonIcon = '%%mastodon';
   const icons = {
     keybase: '%%keybase',
     hackernews: '%%hackernews',
@@ -49,7 +52,9 @@
     dns: '%%generic_web_site',
     facebook: '%%facebook',
     twitter: '%%twitter',
-    mastodon: '%%mastodon',
+    unknown: '%%unknown',
+    ...mastodonInstances.reduce(
+      (result, mastodonInstance) => ({...result, [mastodonInstance]: mastodonIcon}), {}),
   };
 
   // Get proofs from storage or Keybase
@@ -114,7 +119,7 @@
         element.innerHTML += oneLineTrim`
         <br/>
         <a href="${service_url}" class="ProfileHeaderCard-screennameLink u-linkComplex js-nav" rel="noreferrer noopener">
-          <b><span style="${getStyle()}">${icons[proof_type]}</span> ${nametag}</b>
+          <b><span style="${getStyle()}">${icons[proof_type]||icons.unknown}</span> ${nametag}</b>
         </a>
         `;
       }
