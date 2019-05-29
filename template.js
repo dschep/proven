@@ -49,6 +49,7 @@
     dns: '%%generic_web_site',
     facebook: '%%facebook',
     twitter: '%%twitter',
+    mastodon: '%%mastodon',
   };
 
   // Get proofs from storage or Keybase
@@ -98,7 +99,7 @@
     return users.get(username);
   };
 
-  // Add fetch proofs for profile elements and add badges 
+  // Add fetch proofs for profile elements and add badges
   async function twitterProfiles() {
     const {keybaseBadgeOnly} = await getFromStorage('keybaseBadgeOnly');
     let user;
@@ -137,7 +138,7 @@
     }
   }
 
-  // Add fetch proofs for timeline elements and add badges 
+  // Add fetch proofs for timeline elements and add badges
   async function addTwitterTimelineBadges(element, keybaseBadgeOnly) {
     let userElement, user, target;
     if (element.classList.contains('account-group')) {

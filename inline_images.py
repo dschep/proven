@@ -9,5 +9,5 @@ images = {name: open(f'icons/{name}.svg').read() for name in ['facebook',
                                                         'generic_web_site',
                                                         'github', 'hackernews',
                                                         'keybase', 'reddit',
-                                                        'twitter']}
+                                                        'twitter','mastodon']}
 print(template.substitute(images))
