@@ -6,13 +6,15 @@
   // selector for just the @username in mobile profiles
   const mobileProfileSelector = '#react-root > div > div > div > main > div > div.css-1dbjc4n.r-aqfbo4.r-e84r5y.r-16y2uox > div > div.css-1dbjc4n.r-14lw9ot.r-1jgb5lz.r-1ye8kvj.r-13qz1uu.r-184en5c > div > div > div > div > div:nth-child(1) > div > div.css-1dbjc4n.r-15d164r.r-1g94qm0 > div > div > div.css-1dbjc4n.r-18u37iz.r-1wbh5a2 > div > span.css-901oao.css-16my406.r-1qd0xha.r-ad9z0x.r-bcqeeo.r-qvutc0'
 
-  const icon = proof_type => {
+  const icon = (proof_type, colors) => {
     if (proof_type === 'keybase') {
+      if (colors)
+        return `<img style="height:12px" src="https://keybase.io/images/icons/icon-keybase-logo-48.png">`
       return '%%keybase'
     }
     if (['generic_web_site', 'dns'].includes(proof_type))
-      return `<img style="height:12px" src="https://keybase.io/images/paramproofs/services/web/logo_black_16@2x.png">`
-    return `<img style="height:12px" src="https://keybase.io/images/paramproofs/services/${proof_type}/logo_black_16@2x.png">`
+      return `<img style="height:12px" src="https://keybase.io/images/paramproofs/services/web/logo_${colors?'full_32':'black_16@2x'}.png">`
+    return `<img style="height:12px" src="https://keybase.io/images/paramproofs/services/${proof_type}/logo_${colors?'full_32':'black_16@2x'}.png">`
   }
 
 
@@ -103,7 +105,7 @@
 
   // Add fetch proofs for profile elements and add badges
   async function twitterProfiles() {
-    const {keybaseBadgeOnly} = await getFromStorage('keybaseBadgeOnly');
+    const {keybaseBadgeOnly, colors} = await getFromStorage(['keybaseBadgeOnly', 'colors']);
     let user;
     const element = document.querySelector('.ProfileCard-screenname:not(.proven),.ProfileHeaderCard-screenname:not(.proven)');
     if (element) {
@@ -116,7 +118,7 @@
         element.innerHTML += oneLineTrim`
         <br/>
         <a href="${service_url}" class="ProfileHeaderCard-screennameLink u-linkComplex js-nav" rel="noreferrer noopener">
-          <b><span style="${getStyle()}">${icon(proof_type)}</span> ${nametag}</b>
+          <b><span style="${getStyle()}">${icon(proof_type, colors)}</span> ${nametag}</b>
         </a>
         `;
       }
@@ -134,7 +136,7 @@
         <br/>
         <span>
           <a style="color:rgb(101,119,134);text-decoration:none;" href="${service_url}" style="" class="" rel="noreferrer noopener">
-          <span style="${getStyle()}">${icon(proof_type)}</span> ${nametag}
+          <span style="${getStyle()}">${icon(proof_type, colors)}</span> ${nametag}
           </a>
         </span>`;
       }
@@ -143,7 +145,7 @@
   }
 
   // Add fetch proofs for timeline elements and add badges
-  async function addTwitterTimelineBadges(element, keybaseBadgeOnly) {
+  async function addTwitterTimelineBadges(element, keybaseBadgeOnly, colors) {
     let userElement, user, target;
     if (element.classList.contains('account-group')) {
       // twitter.com
@@ -171,23 +173,23 @@
         continue;
       target.innerHTML += oneLineTrim`&nbsp;
       <a href="${service_url}" title="${nametag}" rel="noreferrer noopener">
-        <span style="${getStyle()}">${icon(proof_type)}</span>
+        <span style="${getStyle()}">${icon(proof_type, colors)}</span>
       </a>`;
     }
   }
 
   // select the elements for timelines and call func to add badges
   async function twitterTimeline()  {
-    const {keybaseBadgeOnly} = await getFromStorage('keybaseBadgeOnly');
+    const {keybaseBadgeOnly, colors} = await getFromStorage(['keybaseBadgeOnly', 'colors']);
     for (const element of document.querySelectorAll(
       `.account-group:not(.proven), ${mobileTimelineSelector}:not(.proven), .account-inline:not(.proven)`)) {
       element.classList.add('proven');
-      addTwitterTimelineBadges(element, keybaseBadgeOnly);
+      addTwitterTimelineBadges(element, keybaseBadgeOnly, colors);
     }
   }
 
   async function hackerNews() {
-    const {keybaseBadgeOnly} = await getFromStorage('keybaseBadgeOnly');
+    const {keybaseBadgeOnly, colors} = await getFromStorage(['keybaseBadgeOnly', 'colors']);
     for (const element of Array.from(document.querySelectorAll('.hnuser:not(.proven)'))) {
       element.classList.add('proven');
       const user = element.innerText;
@@ -195,7 +197,7 @@
       for (const {proof_type, nametag, service_url} of proofs.slice().reverse()) {
         if (proof_type === 'hackernews' || (proof_type !== 'keybase' && keybaseBadgeOnly)) continue;
         element.insertAdjacentHTML('afterend', `
-          <a href="${service_url}" rel="noreferrer noopener"><span style="${getStyle()}">${icon(proof_type)}</span></a>`);
+          <a href="${service_url}" rel="noreferrer noopener"><span style="${getStyle()}">${icon(proof_type, colors)}</span></a>`);
       }
     }
   }

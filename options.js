@@ -14,19 +14,26 @@ const setToStorage = (object) => {
 };
 function saveOptions(e) {
   e.preventDefault();
+  console.log({
+    keybaseBadgeOnly: document.querySelector("#keybase-badge-only").checked,
+    colors: document.querySelector("#colors").checked,
+  })
   setToStorage({
     keybaseBadgeOnly: document.querySelector("#keybase-badge-only").checked,
+    colors: document.querySelector("#colors").checked,
   });
 }
 
 function restoreOptions() {
-  function setCurrentChoice({keybaseBadgeOnly}) {
-    console.log(keybaseBadgeOnly)
+  function setCurrentChoice({keybaseBadgeOnly, colors}) {
+    console.log(keybaseBadgeOnly, colors)
     document.querySelector("#keybase-badge-only").checked = keybaseBadgeOnly || false;
+    document.querySelector("#colors").checked = colors || false;
   }
 
-  getFromStorage('keybaseBadgeOnly').then(setCurrentChoice);
+  getFromStorage(['keybaseBadgeOnly', 'colors']).then(setCurrentChoice);
 }
 
 document.addEventListener("DOMContentLoaded", restoreOptions);
-document.querySelector("input").onchange = saveOptions;
+document.querySelector("#keybase-badge-only").onchange = saveOptions;
+document.querySelector("#colors").onchange = saveOptions;
