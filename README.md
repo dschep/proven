@@ -1,5 +1,9 @@
 # ![](./icons/proven32.png) Proven
+
 An alternative to Twitter's verified program powered by [Keybase](https://keybase.io).
+
+**Warning about Twitters's new UI -- this new UI munges the names of CSS classes in the DOM and is currently unsupported. 
+Similarly, Mobile no longer works for the same reason.**
 
 Proven is a browser extension that adds badges like for keybase, github, etc
 next to users names like Twitter's verified badge but based what accounts the
@@ -15,5 +19,4 @@ for the project.
 
 ![](./screenshots/screenshot.png)
 ![](./screenshots/screenshot4.png)
-![](./screenshots/screenshot2.png)
 ![](./screenshots/screenshot3.png)
