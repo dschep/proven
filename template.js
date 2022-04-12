@@ -195,8 +195,9 @@
       const proofs = await getUser(user, 'hackernews');
       for (const {proof_type, nametag, service_url} of proofs.slice().reverse()) {
         if (proof_type === 'hackernews' || (proof_type !== 'keybase' && keybaseBadgeOnly)) continue;
+        const icon = icons[proof_type] || icons.generic_web_site;
         element.insertAdjacentHTML('afterend', `
-          <a href="${service_url}" rel="noreferrer noopener"><span style="${getStyle()}">${icons[proof_type]}</span></a>`);
+          <a href="${service_url}" rel="noreferrer noopener"><span style="${getStyle()}">${icon}</span></a>`);
       }
     }
   }
